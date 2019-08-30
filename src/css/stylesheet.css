@@ -22,6 +22,16 @@
 .main-container{
     width: 90vw;
     min-height: 50vh;
-    border: 1px solid black;
     box-shadow: inset 0 0 35px -16px rgba(128,128,128,1);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bitcoin-box {
+    width: 288px;
+    height: 540px;
+    border: 1px solid black ;
+    margin: 5px 20px;
 }

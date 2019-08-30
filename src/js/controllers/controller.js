@@ -6,7 +6,9 @@ export default class Controller {
     }
 
     _setListeners() {
-
+        document.querySelector('input').addEventListener('click', () => {
+            this._mainContainer.append(this._bitcoinView._createBox(1,1,));
+        });
     }
 
     _getBitcoinRating(type, period) {

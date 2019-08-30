@@ -10,7 +10,8 @@ export default class BitcoinView {
 
     _createBox(bitcoin, chart) {
         const box = document.createElement("div");
-
+        box.classList.add('bitcoin-box');
+        return box;
     }
 
     _createChart(chart) {
