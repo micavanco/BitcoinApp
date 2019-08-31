@@ -30,8 +30,34 @@
 }
 
 .bitcoin-box {
-    width: 288px;
+    min-width: 288px;
+    max-width: 540px;
     height: 540px;
     border: 1px solid black ;
     margin: 5px 20px;
+    position: relative;
+}
+
+.remove-btn{
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.bar1, .bar2{
+    width: content-box;
+    height: 5px;
+    margin-bottom: 5px;
+    background: gray;
+}
+
+.bar1{
+    transform: rotate(-45deg) translate(-10px, -1px);
+}
+
+.bar2{
+    transform: rotate(45deg) translate(-8px, 3px);
 }
