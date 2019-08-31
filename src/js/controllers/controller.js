@@ -1,3 +1,4 @@
+import Bitcoin from "../models/bitcoin";
 
 export default class Controller {
     constructor(BitcoinView){
@@ -8,11 +9,12 @@ export default class Controller {
 
     _setListeners() {
         document.getElementById('add-btn').addEventListener('click', () => {
-            this._mainContainer.append(this._bitcoinView._createBox(1,1,));
-        });
-
-        document.querySelector('.search-input').addEventListener('change', (e) => {
-
+            const input = document.querySelector('.search-input');
+            if(input.value)
+            {
+                const selectedBitcoin = new Bitcoin(input.value);
+                this._mainContainer.append(this._bitcoinView._createBox(selectedBitcoin,1,));
+            }
         });
     }
 

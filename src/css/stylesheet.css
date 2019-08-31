@@ -12,11 +12,11 @@
 }
 
 .header > h1 {
-    margin: 30px 0;
+    margin: 15px 0 5px 0;
 }
 
-.container > input {
-    margin: 20px;
+.input-container {
+    margin-bottom: 10px;
 }
 
 .main-container{
@@ -36,15 +36,22 @@
     border: 1px solid black ;
     margin: 5px 20px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .remove-btn{
-    height: 35px;
-    width: 35px;
+    height: 25px;
+    width: 25px;
     position: absolute;
-    top: 30px;
-    right: 20px;
+    top: 15px;
+    right: 10px;
     cursor: pointer;
+}
+
+.remove-btn:hover div{
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
 }
 
 .bar1, .bar2{
@@ -52,6 +59,7 @@
     height: 5px;
     margin-bottom: 5px;
     background: gray;
+    transition: all .2s ease-in-out;
 }
 
 .bar1{
@@ -60,4 +68,10 @@
 
 .bar2{
     transform: rotate(45deg) translate(-8px, 3px);
+}
+
+#search-output {
+    height: 230px;
+    overflow-y: auto !important;
+    background: blue;
 }
