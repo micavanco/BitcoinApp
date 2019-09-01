@@ -1,6 +1,6 @@
 import api from "./apiData"
 
-
+// klasa wywołująca pobieranie pojedyńczego peaka 
 class SinglePeak {
     constructor(currency, coin) {
         this.currency = currency;
@@ -10,7 +10,7 @@ class SinglePeak {
 
     getPeak() {
         const _api = new api(this.currency, this.coin)
-        _api.getData(this.name);
+        return _api.getData(this.name);
     }
 }
 

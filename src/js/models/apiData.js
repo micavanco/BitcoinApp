@@ -4,9 +4,9 @@ class apiData {
         this.currency = currency;
         this.coin = coin;
     }
-
+    //funkcja pobierająca dane z api, w zależności albo pojedynczy peak albo cenę danej kryptowaluty we wszystkich walutach świata 
     async getData(type) {
-        var response;
+        let response;
         switch(type)
         {
             case "singlePeak":
@@ -30,7 +30,7 @@ class apiData {
         }
         
         const data = await response.json();
-        console.log(data);
+        return data;
     }
 }
 

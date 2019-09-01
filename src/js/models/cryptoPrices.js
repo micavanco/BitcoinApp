@@ -1,6 +1,6 @@
 import api from "./apiData"
 
-
+// klasa wywołująca pobranie kursu kryptowaluty we wszystkich walutach 
 class CryptoPrices {
     constructor(currency, coin) {
         this.currency = currency;
@@ -10,7 +10,7 @@ class CryptoPrices {
 
     getPrices() {
         const _api = new api(this.currency, this.coin)
-        _api.getData(this.name);
+        return _api.getData(this.name);
     }
 }
 
