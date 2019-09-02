@@ -1,18 +1,23 @@
 import Bitcoin from "../models/bitcoin";
+import SinglePeakController from "./singlePeakController";
+import CryptoPricesController from "./cryptoPricesController";
 
 export default class Controller {
     constructor(BitcoinView){
         this._bitcoinView = new BitcoinView;
         this._mainContainer = null;
         this._digital_currencies = [];
+        this._currencies = [];
+        this._date ;
     }
 
     _setListeners() {
         document.getElementById('add-btn').addEventListener('click', () => {
             const input = document.querySelector('.search-input');
+            const input2 = document.querySelector('.search-input-currency'); 
             if(input.value)
             {
-                const selectedBitcoin = new Bitcoin(input.value);
+                const selectedBitcoin = new Bitcoin(input.value, null, null, null, input2.value);
                 this._mainContainer.append(this._bitcoinView._createBox(selectedBitcoin,1,));
             }
         });
@@ -20,6 +25,13 @@ export default class Controller {
 
     _getBitcoinRating(type, period) {
 
+    }
+
+    _getSinglePeak(currency, digitalCurrency) {
+        const singlePeakController = new SinglePeakController(currency, digitalCurrency);
+        const data = singlePeakController.model.getPeak();
+        data.then(x => this._date = x.utc_date);
+        
     }
 
     _getDigitalCurrencies() {
@@ -43,11 +55,28 @@ export default class Controller {
             });
     }
 
+    _getCurrencies() {
+        const cryptoPricesController = new CryptoPricesController('pln', 'btc');
+        const data = cryptoPricesController.model.getPrices();
+        data.then(x => {
+                x.prices.forEach(e => this._currencies.push(Object.values(e)[0]));
+                const dataList = document.getElementById('search-output-currency');
+                let listOptions = '';
+                this._currencies.forEach(e => listOptions += `<option value="${e}">`);
+                dataList.innerHTML = listOptions;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     init() {
         console.log('Inicjalizacja controllera...');
 
         this._mainContainer = this._bitcoinView.init();
         this._getDigitalCurrencies();
+        this._getCurrencies();
+        this._getSinglePeak('pln', 'btc');
         this._setListeners();
     }
 }
