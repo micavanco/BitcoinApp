@@ -7,6 +7,7 @@ class apiData {
     //funkcja pobierająca dane z api, w zależności albo pojedynczy peak albo cenę danej kryptowaluty we wszystkich walutach świata 
     async getData(type) {
         let response;
+        let peakData = [];
         switch(type)
         {
             case "singlePeak":
