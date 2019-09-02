@@ -6,9 +6,72 @@
 }
 
 .container{
-    color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header > h1 {
+    margin: 15px 0 5px 0;
+}
+
+.input-container {
+    margin-bottom: 10px;
 }
 
 .main-container{
+    width: 90vw;
+    min-height: 50vh;
+    box-shadow: inset 0 0 35px -16px rgba(128,128,128,1);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
+.bitcoin-box {
+    min-width: 288px;
+    max-width: 540px;
+    height: 540px;
+    border: 1px solid black ;
+    margin: 5px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.remove-btn{
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.remove-btn:hover div{
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+}
+
+.bar1, .bar2{
+    width: content-box;
+    height: 5px;
+    margin-bottom: 5px;
+    background: gray;
+    transition: all .2s ease-in-out;
+}
+
+.bar1{
+    transform: rotate(-45deg) translate(-10px, -1px);
+}
+
+.bar2{
+    transform: rotate(45deg) translate(-8px, 3px);
+}
+
+#search-output {
+    height: 230px;
+    overflow-y: auto !important;
+    background: blue;
 }

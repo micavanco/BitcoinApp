@@ -1,6 +1,7 @@
 import './../css/stylesheet.css';
 import SinglePeakController from "./controllers/singlePeakController";
 import CryptoPricesController from "./controllers/cryptoPricesController";
+import App from "./app";
 
 const listOfPeaks = [];
 
@@ -14,3 +15,5 @@ data.then(function (value) {
 })
 console.log(listOfPeaks);
 cryptoPricesController.model.getPrices();
+const app = new App();
+app.init();
