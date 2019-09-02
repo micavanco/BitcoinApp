@@ -78,6 +78,5 @@ export default class Controller {
         this._getCurrencies();
         this._getSinglePeak('pln', 'btc');
         this._setListeners();
-        console.log(this.date);
     }
 }
