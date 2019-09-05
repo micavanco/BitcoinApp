@@ -1,4 +1,3 @@
-
 export default class BitcoinView {
 
     _createContainer() {
@@ -12,10 +11,15 @@ export default class BitcoinView {
         const box = document.createElement("div");
         box.classList.add('bitcoin-box');
         box.innerHTML = `<h1>${bitcoin.type}</h1>`;
+        box.innerHTML += `<h2>${bitcoin.currency}</h2>`;
 
         const removeButton = document.createElement('div');
         removeButton.classList.add('remove-btn');
         removeButton.addEventListener('click', () => box.remove());
+
+        const chartBox = document.createElement("canvas");
+        chartBox.setAttribute("id", "myChart");
+        box.append(chartBox);
 
         const bar1 = document.createElement("div");
         const bar2 = document.createElement("div");
