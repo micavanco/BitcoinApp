@@ -7,11 +7,11 @@ export default class BitcoinView {
         return container;
     }
 
-    _createBox(bitcoin, chart) {
+    _createBox(cryptoCurrency, currency, chart) {
         const box = document.createElement("div");
         box.classList.add('bitcoin-box');
-        box.innerHTML = `<h1>${bitcoin.type}</h1>`;
-        box.innerHTML += `<h2>${bitcoin.currency}</h2>`;
+        box.innerHTML = `<h1>${cryptoCurrency}</h1>`;
+        box.innerHTML += `<h2>${currency}</h2>`;
 
         const removeButton = document.createElement('div');
         removeButton.classList.add('remove-btn');

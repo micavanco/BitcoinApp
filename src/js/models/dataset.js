@@ -1,8 +1,9 @@
 
 export default class Dataset {
-    constructor(label, backgroundColor, data) {
+    constructor(label, data, borderColor, backgroundColor) {
         this.label = label;
+        this.chartData = data;
+        this.borderColor = borderColor;
         this.backgroundColor = backgroundColor;
-        this.data = data;
     }
 }

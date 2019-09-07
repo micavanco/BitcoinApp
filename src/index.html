@@ -19,6 +19,18 @@
             <datalist id="search-output"></datalist>
             <input class="search-input-currency" list="search-output-currency" type="text" placeholder="Search for currency..."/>
             <datalist id="search-output-currency"></datalist>
+            <input class="search-input-period" list="search-output-period" type="text" placeholder="Select time period..."/>
+            <datalist id="search-output-period"></datalist>
+            <input class="slider"
+                   TYPE="range"
+                   MIN="1"
+                   MAX="100000"
+                   STEP="1"
+                   VALUE="100"
+                   oninput="document.getElementById('items-label').innerText =
+                   'Amount of data points: '+this.value"
+            />
+            <h4 id="items-label">Amount of data points: 100</h4>
             <button id="add-btn">Add</button>
         </div>
         <div class="chart-box">
@@ -31,7 +43,7 @@
         <marquee scrolldelay="20" truespeed>
             <table class="table">
                 <tr class="widget-row">
-          
+
                 </tr>
             </table>
         </marquee>
