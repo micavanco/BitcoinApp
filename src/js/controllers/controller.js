@@ -1,6 +1,7 @@
 import Bitcoin from "../models/bitcoin";
 import SinglePeakController from "./singlePeakController";
 import CryptoPricesController from "./cryptoPricesController";
+import Chart from 'chart.js';
 
 export default class Controller {
     constructor(BitcoinView){
@@ -79,12 +80,64 @@ export default class Controller {
             data.then(x => {
                 this._bitcoinView._createNameColumn(bitcoin[i]);
                 this._bitcoinView._createPriceColumn(Math.round(x.last_price * 100) / 100);
-                })
+            })
                 .catch(err => {
                     console.log(err);
                 });
         }
+    }
         
+    _generateChart(){
+        const data = {
+            labels: [
+                "15:00","16:00","17:00","18:00","19:00","20:00"
+            ],
+            datasets: [
+                {
+                    label: "BTC",
+                    data: [
+                        10,2,4,1,6,5
+                    ],
+                    fill: false,
+                    borderColor: "lightblue",
+                    backgroundColor: "darkblue",
+                    lineTension: 0.1
+                }
+            ]
+        }
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'test'
+            }
+            }
+          }
+          const ctx = document.getElementById('myChart').getContext('2d');
+          const newChart = new Chart(ctx, config);
+          this._updateConfigChart(newChart);
+    }
+
+    _updateConfigChart(chart) {
+        chart.options.title.text = 'BTC-PLN';
+        chart.update();
+    }
+
+    _addDataToChart(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
     }
 
     init() {
@@ -96,5 +149,6 @@ export default class Controller {
         this._getSinglePeak('pln', 'btc');
         this._setListeners();
         this._createWidget();
+        this._generateChart();
     }
 }
