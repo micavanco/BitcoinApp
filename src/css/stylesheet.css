@@ -75,3 +75,22 @@
     overflow-y: auto !important;
     background: blue;
 }
+
+.widget {
+    display: flex;
+    margin: auto;
+    background: darkgrey;
+    height: 10vh;
+    width: 90%;
+    display: table;
+    margin-top: 10vh;
+    border-radius: 2vh;
+    border: 1px solid white;
+}
+
+.table {
+    font-size: 4em;    
+    border-spacing: 1vh;
+    border-radius: 1vh;
+    color: black;
+}

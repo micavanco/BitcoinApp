@@ -30,6 +30,24 @@ export default class BitcoinView {
         return box;
     }
 
+    _createPriceColumn(bitcoin) {
+        const price = document.createElement('td');
+        price.style.color = "green";
+        price.innerHTML = `<span>${bitcoin}<span style="color: red;">PLN</span></span>`;
+        document.querySelector('.widget-row').append(price);
+
+        return price;
+    }
+
+    _createNameColumn(bitcoin) {
+        const name = document.createElement('td');
+        name.innerHTML = `<span>${bitcoin}:</span>`;
+        document.querySelector('.widget-row').append(name);
+
+        return name;
+    }
+
+
     _createChart(chart) {
 
     }

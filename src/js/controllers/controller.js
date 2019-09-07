@@ -70,6 +70,23 @@ export default class Controller {
             });
     }
 
+    _createWidget() {
+        const bitcoin = ['BTC', 'XRP', 'ETH', 'LTC', 'BCH', 'BNB', 'EOS', 'XMR', 'ADA', 'XLM'];
+        
+        for (let i = 0; i < bitcoin.length; i++) {
+            const singlePeakController = new SinglePeakController('pln', bitcoin[i]);
+            const data = singlePeakController.model.getPeak();
+            data.then(x => {
+                this._bitcoinView._createNameColumn(bitcoin[i]);
+                this._bitcoinView._createPriceColumn(Math.round(x.last_price * 100) / 100);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+        
+    }
+
     init() {
         console.log('Inicjalizacja controllera...');
 
@@ -78,5 +95,6 @@ export default class Controller {
         this._getCurrencies();
         this._getSinglePeak('pln', 'btc');
         this._setListeners();
+        this._createWidget();
     }
 }
