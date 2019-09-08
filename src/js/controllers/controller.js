@@ -11,6 +11,8 @@ export default class Controller {
         this._mainContainer = null;
         this._currencies = [];
         this._chartData = null;
+        document.getElementById("end").value = new Date().toISOString().slice(0,16);
+        document.getElementById("end").max = new Date().toISOString().slice(0,16);
     }
 
     _setListeners() {
@@ -18,14 +20,28 @@ export default class Controller {
             const input = document.querySelector('.search-input');
             const input2 = document.querySelector('.search-input-currency');
             const input3 = document.querySelector('.search-input-interval');
-            const slider = document.querySelector('.slider');
+            let errorMsg = document.getElementById('generate-error');
             if(input.value && input2.value && input3.value)
             {
-                const dateStart = new Date(document.getElementById("start").value);
-                const dateEnd = new Date(document.getElementById("end").value);
-                const ratings = await this._getCryptoCurrencyRating(input.value, input2.value, input3.value, dateStart.getTime(), dateEnd.getTime());
+                let dateStart = null;
+                if(document.getElementById("period-checkbox").checked === true)
+                    dateStart = new Date().getTime() - 86400000;
+                else
+                    dateStart = new Date(document.getElementById("start").value).getTime();
+                const dateEnd = new Date(document.getElementById("end").value).getTime();
+                const ratings = await this._getCryptoCurrencyRating(input.value, input2.value, input3.value, dateStart, dateEnd);
                 this._chartData = await ratings.json();
-                this._createNewChartBox(input.value, input2.value);
+                if(this._chartData.error)
+                {
+                    errorMsg.innerText = this._chartData.error;
+                    errorMsg.style.display = 'block';
+                }
+                else
+                {
+                    errorMsg.style.display = 'none';
+                    this._createNewChartBox(input.value, input2.value);
+                }
+
             }
 
         });
@@ -34,13 +50,17 @@ export default class Controller {
     _createNewChartBox(cryptoCurrency, currency) {
         let data = [];
         let labels = [];
+        const isChecked = document.getElementById("period-checkbox").checked;
         this._chartData.data.forEach(e => {
             data.push(parseFloat(e.priceUsd));
-            labels.push(e.date.substring(0, 10));
+            if(isChecked)
+                labels.push(e.date.substring(11, 19));
+            else
+                labels.push(e.date.substring(0, 10));
         });
         let dataset = new Dataset(cryptoCurrency, data, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
         let chart = new Chart('line', labels, dataset, cryptoCurrency+'-'+currency);
-        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency), currency, chart));
+        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency).toUpperCase(), currency, chart));
     }
 
     _getCryptoCurrencyRating(cryptoCurrency, currency, interval, start, end) {
