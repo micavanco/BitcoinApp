@@ -1,0 +1,11 @@
+[
+  {"id":"m1","name":"One Minute"},
+  {"id":"m5","name":"Five Minutes"},
+  {"id":"m15","name":"Fifteen Minutes"},
+  {"id":"m30","name":"Thirty Minutes"},
+  {"id":"h1","name":"One Hour"},
+  {"id":"h2","name":"Two Hours"},
+  {"id":"h6","name":"Six Hours"},
+  {"id":"h12","name":"Twelve Hours"},
+  {"id":"d1","name":"One Day"}
+]

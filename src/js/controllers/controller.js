@@ -1,7 +1,9 @@
 import SinglePeakController from "./singlePeakController";
-import periods from '../../assets/periods';
 import Dataset from "../models/dataset";
 import Chart from "../models/chart";
+import intervals from '../../assets/intervals';
+
+const API_KEY = "FBAB778D-50F0-41EE-8774-1D71D5D21D1C";
 
 export default class Controller {
     constructor(BitcoinView){
@@ -12,38 +14,57 @@ export default class Controller {
     }
 
     _setListeners() {
-        document.getElementById('add-btn').addEventListener('click', () => {
+        document.getElementById('add-btn').addEventListener('click', async () => {
             const input = document.querySelector('.search-input');
             const input2 = document.querySelector('.search-input-currency');
-            const input3 = document.querySelector('.search-input-period');
+            const input3 = document.querySelector('.search-input-interval');
             const slider = document.querySelector('.slider');
             if(input.value && input2.value && input3.value)
             {
-                this._getCryptoCurrencyRating(input.value, input2.value, input3.value, slider.value);
-                let data = [];
-                let labels = [];
-                this._chartData.forEach(e => {
-                    data.push(e.time_period_end);
-                    labels.push(e.price_close);
-                });
-                let dataset = new Dataset(input.value, data, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
-                let chart = new Chart('line', labels, dataset, input.value+'-'+input2.value);
-                this._mainContainer.append(this._bitcoinView._createBox(input.value, input2.value,chart));
+                const dateStart = new Date(document.getElementById("start").value);
+                const dateEnd = new Date(document.getElementById("end").value);
+                const ratings = await this._getCryptoCurrencyRating(input.value, input2.value, input3.value, dateStart.getTime(), dateEnd.getTime());
+                this._chartData = await ratings.json();
+                this._createNewChartBox(input.value, input2.value);
             }
+
         });
     }
 
-    _getCryptoCurrencyRating(cryptoCurrency, currency, period, limit) {
-        fetch("https://rest.coinapi.io/v1/ohlcv/" +
-            `${cryptoCurrency}/${currency}/` +
-            `latest?period_id=${period}&limit=${limit}`, {
-            "method": "GET",
-            "headers": {
-                "X-CoinAPI-Key": "CA9D596A-6E22-4752-AB14-78A0374BEC96"
-            }
-        })
-            .then(res => res.json())
-            .then(data => this._chartData = data);
+    _createNewChartBox(cryptoCurrency, currency) {
+        let data = [];
+        let labels = [];
+        this._chartData.data.forEach(e => {
+            data.push(parseFloat(e.priceUsd));
+            labels.push(e.date.substring(0, 10));
+        });
+        let dataset = new Dataset(cryptoCurrency, data, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
+        let chart = new Chart('line', labels, dataset, cryptoCurrency+'-'+currency);
+        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency), currency, chart));
+    }
+
+    _getCryptoCurrencyRating(cryptoCurrency, currency, interval, start, end) {
+        return fetch(`https://api.coincap.io/v2/assets/${this._getKeyByValueCrypto(cryptoCurrency)}/history` +
+        `?interval=${this._getKeyByValueIntervals(interval)}&start=${start}&end=${end}`, {
+            "method": "GET"
+        });
+    }
+
+    _getKeyByValueIntervals(value) {
+        let id = null;
+        intervals.forEach(e => {if(e.name === value)id = e.id;});
+        return id;
+    }
+
+    _getKeyByValueCrypto(value) {
+        let id = null;
+        this._currencies.forEach(e => {if(e.symbol === value)id = e.id;});
+        return id;
+    }
+
+
+    _convertCurrency() {
+
     }
 
     _getSinglePeak(currency, digitalCurrency) {
@@ -54,37 +75,50 @@ export default class Controller {
     }
 
     _getDigitalCurrencies() {
-        fetch("", {
-            "method": "GET",
-            "headers": {
-                "X-CoinAPI-Key": "CA9D596A-6E22-4752-AB14-78A0374BEC96"
-            }
+        fetch("https://api.coincap.io/v2/assets", {
+            "method": "GET"
         })
             .then(response => response.json())
             .then(data => {
-                this._currencies = data;
+                this._currencies = data.data;
                 const dataList = document.getElementById('search-output');
-                const dataList2 = document.getElementById('search-output-currency');
                 let listOptionsCrypto = '';
-                let listOptionsNonCrypto = '';
                 this._currencies.forEach(e => {
-                    if(e.type_is_crypto)
-                        listOptionsCrypto += `<option value="${e.asset_id}">`;
-                    else
-                        listOptionsNonCrypto += `<option value="${e.asset_id}">`;
+                    listOptionsCrypto += `<option value="${e.symbol}">`;
                 });
                 dataList.innerHTML = listOptionsCrypto;
-                dataList2.innerHTML = listOptionsNonCrypto;
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    _setAvailablePeriods() {
-        const dataList = document.getElementById('search-output-period');
+    _getCurrencies() {
+        fetch("https://currency-converter5.p.rapidapi.com/currency/list?format=json", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "currency-converter5.p.rapidapi.com",
+                "x-rapidapi-key": "4f51d720camsh44ba5e07fbba621p10dc0fjsn3426629f4708"
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const dataList = document.getElementById('search-output-currency');
+                let listOptions = '';
+                Object.keys(data.currencies).forEach(e => {
+                    listOptions += `<option value="${e}">`;
+                });
+                dataList.innerHTML = listOptions;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    _setAvailableIntervals() {
+        const dataList = document.getElementById('search-output-interval');
         let listOptions = '';
-        periods.forEach(e => listOptions += `<option value="${e.display_name}">`);
+        intervals.forEach(e => listOptions += `<option value="${e.name}">`);
         dataList.innerHTML = listOptions;
     }
 
@@ -104,68 +138,15 @@ export default class Controller {
         }
     }
 
-    _generateChart(){
-        const data = {
-            labels: [
-                "15:00","16:00","17:00","18:00","19:00","20:00"
-            ],
-            datasets: [
-                {
-                    label: "BTC",
-                    data: [
-                        10,2,4,1,6,5
-                    ],
-                    fill: false,
-                    borderColor: "lightblue",
-                    backgroundColor: "darkblue",
-                    lineTension: 0.1
-                }
-            ]
-        }
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                scales: {
-                    yAxes: [{
-                        stacked: true
-                    }]
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-                title: {
-                    display: true,
-                    text: 'test'
-            }
-            }
-          }
-          const ctx = document.getElementById('myChart').getContext('2d');
-          const newChart = new Chart(ctx, config);
-          this._updateConfigChart(newChart);
-    }
-
-    _updateConfigChart(chart) {
-        chart.options.title.text = 'BTC-PLN';
-        chart.update();
-    }
-
-    _addDataToChart(chart, label, data) {
-        chart.data.labels.push(label);
-        chart.data.datasets.forEach((dataset) => {
-            dataset.data.push(data);
-        });
-        chart.update();
-    }
-
     init() {
         console.log('Inicjalizacja controllera...');
 
         this._mainContainer = this._bitcoinView.init();
         this._getDigitalCurrencies();
-        this._setAvailablePeriods();
+        this._getCurrencies();
+        this._setAvailableIntervals();
         this._getSinglePeak('pln', 'btc');
         this._setListeners();
         this._createWidget();
-        this._generateChart();
     }
 }

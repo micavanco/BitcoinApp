@@ -124,3 +124,10 @@
     background: #4CAF50;
     cursor: pointer;
 }
+
+/*--------------- Chart ------------------------ */
+
+canvas {
+    width: 270px !important;
+    height: 470px !important;
+}

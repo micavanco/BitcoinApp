@@ -1,3 +1,5 @@
+import Chart from 'chart.js';
+
 export default class BitcoinView {
 
     _createContainer() {
@@ -18,7 +20,7 @@ export default class BitcoinView {
         removeButton.addEventListener('click', () => box.remove());
 
         const chartBox = document.createElement("canvas");
-        chartBox.setAttribute("id", "myChart");
+        this._generateChart(chartBox, chart);
         box.append(chartBox);
 
         const bar1 = document.createElement("div");
@@ -32,6 +34,41 @@ export default class BitcoinView {
         box.append(removeButton);
 
         return box;
+    }
+
+    _generateChart(chartElement, chart){
+        const data = {
+            labels: chart.labels,
+            datasets: [
+                {
+                    label: chart.datasets.label,
+                    data: chart.datasets.chartData,
+                    fill: false,
+                    borderColor: chart.datasets.borderColor,
+                    backgroundColor: chart.datasets.backgroundColor,
+                    lineTension: 0.1
+                }
+            ]
+        };
+        const config = {
+            type: chart.type,
+            data: data,
+            options: {
+                scales: {
+                    yAxes: [{
+                        stacked: false
+                    }]
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: chart.title
+                }
+            }
+        };
+        const ctx = chartElement.getContext('2d');
+        new Chart(ctx, config);
     }
 
     _createPriceColumn(bitcoin) {
@@ -49,15 +86,6 @@ export default class BitcoinView {
         document.querySelector('.widget-row').append(name);
 
         return name;
-    }
-
-
-    _createChart(chart) {
-
-    }
-
-    _createBitcoin(bitcoin) {
-
     }
 
     init() {

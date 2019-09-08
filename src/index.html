@@ -19,24 +19,19 @@
             <datalist id="search-output"></datalist>
             <input class="search-input-currency" list="search-output-currency" type="text" placeholder="Search for currency..."/>
             <datalist id="search-output-currency"></datalist>
-            <input class="search-input-period" list="search-output-period" type="text" placeholder="Select time period..."/>
-            <datalist id="search-output-period"></datalist>
-            <input class="slider"
-                   TYPE="range"
-                   MIN="1"
-                   MAX="100000"
-                   STEP="1"
-                   VALUE="100"
-                   oninput="document.getElementById('items-label').innerText =
-                   'Amount of data points: '+this.value"
-            />
-            <h4 id="items-label">Amount of data points: 100</h4>
+            <input class="search-input-interval" list="search-output-interval" type="text" placeholder="Select time interval..."/>
+            <datalist id="search-output-interval"></datalist>
+            <input type="checkbox" name="24 period" value="24 period" onchange="document.getElementById('start').disabled = document.getElementById('start').disabled!==true"/> 24h period<br>
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="start"
+                   value="2018-07-22"
+                   min="2006-01-01" max="2019-08-09">
+            <label for="end">End date:</label>
+            <input type="date" id="end" name="end"
+                   value="2019-08-09"
+                   min="2006-01-01" max="2019-08-09">
             <button id="add-btn">Add</button>
         </div>
-        <div class="chart-box">
-            <canvas id="myChart" width="400" height="400"></canvas>
-        </div>
-
 
     </main>
     <div class="widget">
