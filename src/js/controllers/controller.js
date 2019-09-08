@@ -26,7 +26,7 @@ export default class Controller {
             {
                 let dateStart = null;
                 if(document.getElementById("period-checkbox").checked === true)
-                    dateStart = new Date().getTime() - 86400000;
+                    dateStart = new Date(document.getElementById("end").value) - 86400000;
                 else
                     dateStart = new Date(document.getElementById("start").value).getTime();
                 const dateEnd = new Date(document.getElementById("end").value).getTime();
@@ -64,7 +64,7 @@ export default class Controller {
         this._chartData.data.forEach(e => {
             data.push(parseFloat(e.priceUsd)*currencyMultiplier);
             if(isChecked)
-                labels.push(e.date.substring(11, 19));
+                labels.push(new Date(e.time + 7200000).toString().split(' ')[4]);
             else
                 labels.push(e.date.substring(0, 10));
         });
