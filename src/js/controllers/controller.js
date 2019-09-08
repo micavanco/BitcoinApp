@@ -68,9 +68,12 @@ export default class Controller {
             else
                 labels.push(e.date.substring(0, 10));
         });
-        let dataset = new Dataset(cryptoCurrency, data, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
+        let dotsColor = document.getElementById('chart-dots').value;
+        let lineColor = document.getElementById('chart-line').value;
+
+        let dataset = new Dataset(cryptoCurrency, data, lineColor, dotsColor);
         let chart = new Chart('line', labels, dataset, cryptoCurrency+'-'+currency);
-        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency).toUpperCase(), this._currencies[currency], chart));
+        this._mainContainer.append(this._bitcoinView._createBox(currency, this._getKeyByValueCrypto(cryptoCurrency).toUpperCase(), this._currencies[currency], chart));
     }
 
     _getCryptoCurrencyRating(cryptoCurrency, currency, interval, start, end) {

@@ -9,7 +9,7 @@ export default class BitcoinView {
         return container;
     }
 
-    _createBox(cryptoCurrency, currency, chart) {
+    _createBox(currencyYAxisLabel, cryptoCurrency, currency, chart) {
         const box = document.createElement("div");
         box.classList.add('bitcoin-box');
         box.innerHTML = `<h1>${cryptoCurrency}</h1>`;
@@ -20,7 +20,7 @@ export default class BitcoinView {
         removeButton.addEventListener('click', () => box.remove());
 
         const chartBox = document.createElement("canvas");
-        this._generateChart(chartBox, chart);
+        this._generateChart(currencyYAxisLabel, chartBox, chart);
         box.append(chartBox);
 
         const bar1 = document.createElement("div");
@@ -36,7 +36,7 @@ export default class BitcoinView {
         return box;
     }
 
-    _generateChart(chartElement, chart){
+    _generateChart(currencyYAxisLabel, chartElement, chart){
         const data = {
             labels: chart.labels,
             datasets: [
@@ -56,7 +56,11 @@ export default class BitcoinView {
             options: {
                 scales: {
                     yAxes: [{
-                        stacked: false
+                        stacked: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: currencyYAxisLabel
+                        }
                     }]
                 },
                 responsive: true,
