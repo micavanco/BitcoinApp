@@ -21,21 +21,25 @@
             <datalist id="search-output-currency"></datalist>
             <input class="search-input-interval" list="search-output-interval" type="text" placeholder="Select time interval..."/>
             <datalist id="search-output-interval"></datalist>
+            <br/>
             <input id="period-checkbox" type="checkbox" name="24 period" value="24 period" onchange="document.getElementById('start').disabled = document.getElementById('start').disabled!==true"/> 24h period<br>
             <label for="start">Start date:</label>
             <input type="datetime-local" id="start" name="start"
                    value="2018-07-22T00:00"
                    min="2006-01-01T00:00" max="2019-08-09T00:00">
+            <br/>
             <label for="end">End date:</label>
             <input type="datetime-local" id="end" name="end"
                    value="2019-08-09T00:00"
                    min="2006-01-01T00:00" max="2019-08-09T00:00">
+            <br/>
             <input type="color" id="chart-dots" name="chart-dots"
                    value="#e66465">
             <label for="chart-dots">Chart Dots</label>
             <input type="color" id="chart-line" name="chart-line"
                    value="#9498b5">
             <label for="chart-line">Chart Line</label>
+            <br/>
             <button id="add-btn">Add</button>
             <h4 id="generate-error" style="color: red; display: none"></h4>
         </div>

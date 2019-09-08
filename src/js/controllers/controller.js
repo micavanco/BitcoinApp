@@ -64,7 +64,7 @@ export default class Controller {
         this._chartData.data.forEach(e => {
             data.push(parseFloat(e.priceUsd)*currencyMultiplier);
             if(isChecked)
-                labels.push(new Date(e.time + 7200000).toString().split(' ')[4]);
+                labels.push(new Date(e.time).toString().split(' ')[4]);
             else
                 labels.push(e.date.substring(0, 10));
         });
