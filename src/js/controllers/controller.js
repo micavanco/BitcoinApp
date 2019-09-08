@@ -9,7 +9,8 @@ export default class Controller {
     constructor(BitcoinView){
         this._bitcoinView = new BitcoinView;
         this._mainContainer = null;
-        this._currencies = [];
+        this._cryptoCurrencies = [];
+        this._currencies = null;
         this._chartData = null;
         document.getElementById("end").value = new Date().toISOString().slice(0,16);
         document.getElementById("end").max = new Date().toISOString().slice(0,16);
@@ -39,20 +40,29 @@ export default class Controller {
                 else
                 {
                     errorMsg.style.display = 'none';
-                    this._createNewChartBox(input.value, input2.value);
+                    let currencyMultiplier = 1;
+                    if(input2.value !== 'USD')
+                    {
+                        let currency = await this._convertCurrency();
+                        currency = await currency.json();
+                        Object.keys(currency.rates).forEach(e => {
+                            if(e === input2.value)
+                                currencyMultiplier = currency.rates[e];
+                        });
+                    }
+                    this._createNewChartBox(input.value, input2.value, currencyMultiplier);
                 }
-
             }
 
         });
     }
 
-    _createNewChartBox(cryptoCurrency, currency) {
+    _createNewChartBox(cryptoCurrency, currency, currencyMultiplier) {
         let data = [];
         let labels = [];
         const isChecked = document.getElementById("period-checkbox").checked;
         this._chartData.data.forEach(e => {
-            data.push(parseFloat(e.priceUsd));
+            data.push(parseFloat(e.priceUsd)*currencyMultiplier);
             if(isChecked)
                 labels.push(e.date.substring(11, 19));
             else
@@ -60,7 +70,7 @@ export default class Controller {
         });
         let dataset = new Dataset(cryptoCurrency, data, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
         let chart = new Chart('line', labels, dataset, cryptoCurrency+'-'+currency);
-        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency).toUpperCase(), currency, chart));
+        this._mainContainer.append(this._bitcoinView._createBox(this._getKeyByValueCrypto(cryptoCurrency).toUpperCase(), this._currencies[currency], chart));
     }
 
     _getCryptoCurrencyRating(cryptoCurrency, currency, interval, start, end) {
@@ -78,13 +88,15 @@ export default class Controller {
 
     _getKeyByValueCrypto(value) {
         let id = null;
-        this._currencies.forEach(e => {if(e.symbol === value)id = e.id;});
+        this._cryptoCurrencies.forEach(e => {if(e.symbol === value)id = e.id;});
         return id;
     }
 
 
     _convertCurrency() {
-
+        return fetch(`https://api.exchangeratesapi.io/latest?base=USD`, {
+            "method": "GET"
+        });
     }
 
     _getSinglePeak(currency, digitalCurrency) {
@@ -100,10 +112,10 @@ export default class Controller {
         })
             .then(response => response.json())
             .then(data => {
-                this._currencies = data.data;
+                this._cryptoCurrencies = data.data;
                 const dataList = document.getElementById('search-output');
                 let listOptionsCrypto = '';
-                this._currencies.forEach(e => {
+                this._cryptoCurrencies.forEach(e => {
                     listOptionsCrypto += `<option value="${e.symbol}">`;
                 });
                 dataList.innerHTML = listOptionsCrypto;
@@ -123,6 +135,7 @@ export default class Controller {
         })
             .then(response => response.json())
             .then(data => {
+                this._currencies = data.currencies;
                 const dataList = document.getElementById('search-output-currency');
                 let listOptions = '';
                 Object.keys(data.currencies).forEach(e => {
