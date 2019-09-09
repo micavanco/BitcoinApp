@@ -9,7 +9,7 @@ On application startup there are downloading available cryptocurrencies and curr
 Based on those values we can decide how detailed chart we want to generate by setting interval value. 
 Next we can decide what kind of period of time we want to analyze by checking 24h period checkbox, which results in very detailed chart up to every minute in 24 period of time or we can set start date and end date of longer period of time.
 As an additional feature you can pick colors of data points and line of a chart.
-On a bottom of a website there is a banner with a current rates of the most commonly used cryptocurrencies exchanged to polish z³oty.
+On a bottom of a website there is a banner with a current rates of the most commonly used cryptocurrencies exchanged to Polish Zloty.
 In case of wrong interval value error message will pop up (see Wrong Interval Error image).
 Try it out here: https://micavanco.github.io/BitcoinApp/
 
