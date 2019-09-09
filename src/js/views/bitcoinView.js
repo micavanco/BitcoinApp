@@ -12,8 +12,8 @@ export default class BitcoinView {
     _createBox(currencyYAxisLabel, cryptoCurrency, currency, chart) {
         const box = document.createElement("div");
         box.classList.add('bitcoin-box');
-        box.innerHTML = `<h1>${cryptoCurrency}</h1>`;
-        box.innerHTML += `<h2>${currency}</h2>`;
+        box.innerHTML = `<h1 style="margin-top: 15px;">${cryptoCurrency}</h1>`;
+        box.innerHTML += `<h4>${currency}</h4>`;
 
         const removeButton = document.createElement('div');
         removeButton.classList.add('remove-btn');
@@ -43,9 +43,11 @@ export default class BitcoinView {
                 {
                     label: chart.datasets.label,
                     data: chart.datasets.chartData,
-                    fill: false,
+                    fill: true,
                     borderColor: chart.datasets.borderColor,
-                    backgroundColor: chart.datasets.backgroundColor,
+                    backgroundColor: 'rgba(91,84,87,0.11)',
+                    pointBackgroundColor: chart.datasets.backgroundColor,
+                    pointBorderColor: chart.datasets.backgroundColor,
                     lineTension: 0.1
                 }
             ]
@@ -78,7 +80,7 @@ export default class BitcoinView {
     _createPriceColumn(bitcoin) {
         const price = document.createElement('td');
         price.style.color = "green";
-        price.innerHTML = `<span>${bitcoin}<span style="color: red;">PLN</span></span>`;
+        price.innerHTML = `<span>${bitcoin}<span style="color:cornflowerblue;">PLN</span></span>`;
         document.querySelector('.widget-row').append(price);
 
         return price;
@@ -86,7 +88,7 @@ export default class BitcoinView {
 
     _createNameColumn(bitcoin) {
         const name = document.createElement('td');
-        name.innerHTML = `<span>${bitcoin}:</span>`;
+        name.innerHTML = `<span style="margin-left:2em">${bitcoin}:</span>`;
         document.querySelector('.widget-row').append(name);
 
         return name;
