@@ -79,8 +79,8 @@ export default class BitcoinView {
 
     _createPriceColumn(bitcoin) {
         const price = document.createElement('td');
-        price.style.color = "green";
-        price.innerHTML = `<span>${bitcoin}<span style="color:cornflowerblue;">PLN</span></span>`;
+        price.style.color = "black";
+        price.innerHTML = `<span class="wg-price">${bitcoin}<span> PLN</span></span>`;
         document.querySelector('.widget-row').append(price);
 
         return price;
@@ -88,7 +88,7 @@ export default class BitcoinView {
 
     _createNameColumn(bitcoin) {
         const name = document.createElement('td');
-        name.innerHTML = `<span style="margin-left:2em">${bitcoin}:</span>`;
+        name.innerHTML = `<span class="wg-name">${bitcoin}:</span>`;
         document.querySelector('.widget-row').append(name);
 
         return name;
